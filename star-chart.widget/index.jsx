@@ -158,6 +158,16 @@ function renderStarMapSVG(data, size, height) {
 
   const stars = projectDipperStars(65);
 
+  // ── 计算斗柄旋转角度 ──
+  // handleAngle 是罗盘方位角（0°=北/上，顺时针）
+  // SVG rotate() 从3点钟方向（右/东）顺时针旋转
+  // 地支环坐标系：子=北=上，卯=东=右（标准罗盘布局）
+  // 罗盘方位 θ 对应 SVG 角度 (θ - 90°)
+  // 需修正初始斗柄朝向（由 RA/Dec 投影决定）
+  const tipStar = stars[6]; // 摇光（斗柄末端）
+  const initialHandleSVGAngle = Math.atan2(tipStar.y, tipStar.x) * 180 / Math.PI;
+  const dipperRotation = (handleAngle - 90 - initialHandleSVGAngle + 720) % 360;
+
   // ── 北斗连线（加粗提亮）──
   const bowlLinesStr = BOWL_LINES.map(([a, b]) =>
     `<line x1="${stars[a].x}" y1="${stars[a].y}" x2="${stars[b].x}" y2="${stars[b].y}" stroke="#6688cc" stroke-width="1.8" stroke-opacity="0.8"/>`
@@ -331,7 +341,7 @@ function renderStarMapSVG(data, size, height) {
     ${groupLabels}
     ${termStr}
 
-    <g transform="rotate(${handleAngle})">
+    <g transform="rotate(${dipperRotation})">
       ${bowlLinesStr}
       ${handleLinesStr}
       ${starsStr}
