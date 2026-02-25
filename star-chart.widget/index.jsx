@@ -361,14 +361,16 @@ function renderStarMapSVG(data, size, height) {
     </g>
   </g>
 
-  <!-- 左下角：标题 + 日期 -->
-  <text x="14" y="${h - 68}" fill="#8899bb" font-size="13px" font-weight="600" letter-spacing="1px" ${FF}>璇玑星图</text>
-  <text x="14" y="${h - 56}" fill="#8899aa" font-size="11px" ${FF}>${dateStr}</text>
-  <text x="14" y="${h - 42}" fill="#778899" font-size="10px" ${FF}>${lunarStr}</text>
+  <!-- 左上角：标题 -->
+  <text x="14" y="20" fill="#8899bb" font-size="13px" font-weight="600" letter-spacing="1px" ${FF}>璇玑星图</text>
 
-  <!-- 右下角：值日星宿 -->
-  <text x="${size - 14}" y="${h - 56}" fill="${mColor}" font-size="13px" font-weight="bold" text-anchor="end" filter="url(#glow)" ${FF}>${mansionName}</text>
-  <text x="${size - 14}" y="${h - 42}" fill="#8899aa" font-size="10px" text-anchor="end" ${FF}>${GROUP_SHORT[MANSIONS[currentMansionIdx]?.group] || ''} · ${mansionData.star || ''}</text>
+  <!-- 右上角：日期 -->
+  <text x="${size - 14}" y="14" fill="#8899aa" font-size="11px" text-anchor="end" ${FF}>${dateStr}</text>
+  <text x="${size - 14}" y="28" fill="#778899" font-size="10px" text-anchor="end" ${FF}>${lunarStr}</text>
+
+  <!-- 左下角：值日星宿 -->
+  <text x="14" y="${h - 56}" fill="${mColor}" font-size="13px" font-weight="bold" filter="url(#glow)" ${FF}>${mansionName}</text>
+  <text x="14" y="${h - 42}" fill="#8899aa" font-size="10px" ${FF}>${GROUP_SHORT[MANSIONS[currentMansionIdx]?.group] || ''} · ${mansionData.star || ''}</text>
 
   <!-- 底部中央：斗柄诗句 -->
   <line x1="40" y1="${h - 26}" x2="${size - 40}" y2="${h - 26}" stroke="#1a2a50" stroke-width="0.5" opacity="0.5"/>
