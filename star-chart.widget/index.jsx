@@ -222,14 +222,11 @@ function renderStarMapSVG(data, size, height) {
     const color = GROUP_COLORS[group];
     const indices = [0,7,21,14]; // 苍龙=0, 朱雀=21(mapped to gi), 白虎=14, 玄武=7
     const startI = [0, 21, 14, 7][gi];
-    for (let j = 0; j < 7; j++) {
-      const i = startI + j;
-      const a1 = posAngle(i, 28);
-      const a2 = posAngle(i + 1, 28);
-      const x1 = Math.cos(a1) * arcR, y1 = Math.sin(a1) * arcR;
-      const x2 = Math.cos(a2) * arcR, y2 = Math.sin(a2) * arcR;
-      groupArcStr += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="3" opacity="0.25"/>`;
-    }
+    const a1 = posAngle(startI, 28);
+    const a2 = posAngle(startI + 7, 28);
+    const x1 = Math.cos(a1) * arcR, y1 = Math.sin(a1) * arcR;
+    const x2 = Math.cos(a2) * arcR, y2 = Math.sin(a2) * arcR;
+    groupArcStr += `<path d="M${x1},${y1} A${arcR},${arcR} 0 0,1 ${x2},${y2}" fill="none" stroke="${color}" stroke-width="3" opacity="0.25"/>`;
     // 弧外点标记
     for (let j = 0; j < 7; j++) {
       const i = startI + j;
@@ -250,7 +247,7 @@ function renderStarMapSVG(data, size, height) {
     const midA = posAngle(i + 0.5, 12);
     const r = 190;
     const x = Math.cos(midA) * r, y = Math.sin(midA) * r;
-    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${isCurrent ? '#bbccee' : '#556677'}" font-size="${isCurrent ? '12px' : '10px'}" font-weight="${isCurrent ? 'bold' : 'normal'}" ${isCurrent ? 'filter="url(#glow)"' : ''} ${FF}>${dz}</text>`;
+    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${isCurrent ? '#ccddff' : '#6a7a8a'}" font-size="${isCurrent ? '13px' : '11px'}" font-weight="${isCurrent ? 'bold' : '500'}" ${isCurrent ? 'filter="url(#glow)"' : ''} ${FF}>${dz}</text>`;
   }).join('');
 
   // ── 星宿环（显著提亮放大）──
@@ -267,7 +264,7 @@ function renderStarMapSVG(data, size, height) {
       const dx = Math.cos(midA) * dr, dy = Math.sin(midA) * dr;
       svg += `<circle cx="${dx}" cy="${dy}" r="14" fill="${color}" opacity="0.12" filter="url(#strong-glow)"/>`;
     }
-    svg += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${isCurrent ? '#ffffff' : color}" fill-opacity="${isCurrent ? 1 : 0.75}" font-size="${isCurrent ? '13px' : '10px'}" font-weight="${isCurrent ? 'bold' : '500'}" ${isCurrent ? 'filter="url(#glow)"' : ''} ${FF}>${m.short}</text>`;
+    svg += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${isCurrent ? '#ffffff' : color}" fill-opacity="${isCurrent ? 1 : 0.9}" font-size="${isCurrent ? '12px' : '9px'}" font-weight="${isCurrent ? 'bold' : '500'}" ${isCurrent ? 'filter="url(#glow)"' : ''} ${FF}>${m.short}</text>`;
     return svg;
   }).join('');
 
@@ -277,7 +274,7 @@ function renderStarMapSVG(data, size, height) {
     const midA = posAngle(i + 0.5, 24);
     const labelR = 130;
     const x = Math.cos(midA) * labelR, y = Math.sin(midA) * labelR;
-    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${isCurrent ? '#ddeeff' : '#556677'}" font-size="${isCurrent ? '9px' : '7.5px'}" font-weight="${isCurrent ? 'bold' : 'normal'}" ${isCurrent ? 'filter="url(#glow)"' : ''} ${FF}>${t.length <= 2 ? t : t.slice(0, 2)}</text>`;
+    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${isCurrent ? '#ddeeff' : '#6a7a8a'}" font-size="${isCurrent ? '10px' : '8.5px'}" font-weight="${isCurrent ? 'bold' : 'normal'}" ${isCurrent ? 'filter="url(#glow)"' : ''} ${FF}>${t.length <= 2 ? t : t.slice(0, 2)}</text>`;
   }).join('');
 
   // ── 圆环（提亮）──
@@ -291,12 +288,13 @@ function renderStarMapSVG(data, size, height) {
     `<circle r="${r}" fill="none" stroke="${c}" stroke-width="0.8" opacity="${o}"/>`
   ).join('');
 
-  // ── 十字准星线（方位标记）──
+  // ── 十字准星线（方位标记）+ 东南西北 ──
   const crossLines = `
     <line x1="0" y1="-195" x2="0" y2="-80" stroke="#2a3a60" stroke-width="0.5" opacity="0.3"/>
     <line x1="0" y1="80" x2="0" y2="195" stroke="#2a3a60" stroke-width="0.5" opacity="0.3"/>
     <line x1="-195" y1="0" x2="-80" y2="0" stroke="#2a3a60" stroke-width="0.5" opacity="0.3"/>
-    <line x1="80" y1="0" x2="195" y2="0" stroke="#2a3a60" stroke-width="0.5" opacity="0.3"/>`;
+    <line x1="80" y1="0" x2="195" y2="0" stroke="#2a3a60" stroke-width="0.5" opacity="0.3"/>
+`;
 
   // ── 四象名称标记（提亮放大）──
   const groupLabels = GROUP_ORDER.map((group, gi) => {
@@ -305,13 +303,14 @@ function renderStarMapSVG(data, size, height) {
     const midA = posAngle(startI + 3.5, 28);
     const r = 108;
     const x = Math.cos(midA) * r, y = Math.sin(midA) * r;
-    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${color}" fill-opacity="0.45" font-size="10px" font-weight="600" ${FF}>${GROUP_SHORT[group]}</text>`;
+    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${color}" fill-opacity="0.6" font-size="11px" font-weight="600" ${FF}>${GROUP_SHORT[group]}</text>`;
   }).join('');
 
   // ── 信息面板 ──
   const mColor = GROUP_COLORS[MANSIONS[currentMansionIdx]?.group] || '#888';
   const dateStr = data?.date?.solar || '';
   const lunarStr = data?.date?.lunar || '';
+  const hourStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
   const mansionName = MANSIONS[currentMansionIdx]?.name || '';
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${h}" viewBox="0 0 ${size} ${h}">
@@ -364,13 +363,13 @@ function renderStarMapSVG(data, size, height) {
   <!-- 左上角：标题 -->
   <text x="14" y="22" fill="#aabbdd" font-size="16px" font-weight="700" letter-spacing="2px" filter="url(#text-glow)" ${FF}>璇玑星图</text>
 
-  <!-- 右上角：日期 -->
-  <text x="${size - 14}" y="14" fill="#8899aa" font-size="11px" text-anchor="end" ${FF}>${dateStr}</text>
+  <!-- 右上角：日期+时间 -->
+  <text x="${size - 14}" y="14" fill="#8899aa" font-size="11px" text-anchor="end" ${FF}>${dateStr} ${hourStr}</text>
   <text x="${size - 14}" y="28" fill="#778899" font-size="10px" text-anchor="end" ${FF}>${lunarStr}</text>
 
   <!-- 左下角：值日星宿 -->
-  <text x="14" y="${h - 52}" fill="${mColor}" font-size="14px" font-weight="bold" filter="url(#glow)" ${FF}>${mansionName}</text>
-  <text x="14" y="${h - 38}" fill="#778899" font-size="10px" ${FF}>${GROUP_SHORT[MANSIONS[currentMansionIdx]?.group] || ''} · ${mansionData.star || ''}</text>
+  <text x="14" y="${h - 52}" fill="${mColor}" font-size="15px" font-weight="bold" filter="url(#glow)" ${FF}>${mansionName}</text>
+  <text x="14" y="${h - 37}" fill="#8899aa" font-size="11px" ${FF}>${GROUP_SHORT[MANSIONS[currentMansionIdx]?.group] || ''} · ${mansionData.star || ''}</text>
 
   <!-- 底部中央：斗柄诗句 -->
   <line x1="40" y1="${h - 26}" x2="${size - 40}" y2="${h - 26}" stroke="#1a2a50" stroke-width="0.5" opacity="0.5"/>
