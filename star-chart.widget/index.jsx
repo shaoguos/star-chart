@@ -369,6 +369,7 @@ function renderStarMapSVG(data, size, height) {
   <text x="${size - 14}" y="28" fill="#778899" font-size="10px" text-anchor="end" ${FF}>${lunarStr}</text>
 
   <!-- 左下角：值日星宿 -->
+  <text x="14" y="${h - 68}" fill="#8899aa" font-size="10px" ${FF}>值日星宿</text>
   <text x="14" y="${h - 56}" fill="${mColor}" font-size="13px" font-weight="bold" filter="url(#glow)" ${FF}>${mansionName}</text>
   <text x="14" y="${h - 42}" fill="#8899aa" font-size="10px" ${FF}>${GROUP_SHORT[MANSIONS[currentMansionIdx]?.group] || ''} · ${mansionData.star || ''}</text>
 
