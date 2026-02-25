@@ -339,6 +339,9 @@ function renderStarMapSVG(data, size, height) {
   <!-- 边框 -->
   <rect width="${size}" height="${h}" rx="12" fill="none" stroke="#1a2a50" stroke-width="1" opacity="0.5"/>
 
+  <!-- 标题 -->
+  <text x="${cx}" y="20" fill="#8899bb" font-size="12px" text-anchor="middle" letter-spacing="3px" opacity="0.7" ${FF}>璇 玑 星 图</text>
+
   <!-- 星场 -->
   ${bgStars}
 
@@ -370,6 +373,7 @@ function renderStarMapSVG(data, size, height) {
   <!-- 底部中央：斗柄诗句 -->
   <line x1="40" y1="${h - 26}" x2="${size - 40}" y2="${h - 26}" stroke="#1a2a50" stroke-width="0.5" opacity="0.5"/>
   <text x="${cx}" y="${h - 10}" fill="${seasonColor}" font-size="11px" text-anchor="middle" filter="url(#text-glow)" ${FF}>${dipperData.directionText || ''}</text>
+  <text x="${size - 14}" y="${h - 10}" fill="#445566" font-size="8px" text-anchor="end" opacity="0.6" ${FF}>qi-huang.com</text>
 </svg>`;
 }
 
